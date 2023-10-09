@@ -1,4 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Reminder } from 'src/app/interfaces/reminder';
+import { ReminderServiceService } from 'src/app/services/reminder.service';
 
 @Component({
   selector: 'app-calendar',
@@ -12,20 +15,11 @@ export class CalendarComponent {
   date = new Date();
   currYear = this.date.getFullYear();
   currMonth = this.date.getMonth();
-
-  months: string[] = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+  isClicked = false;
+  reminderForm: FormGroup;
+  isEditingReminder = false;
+  months: string[] = ['January','February','March','April','May','June','July','August','September',
+    'October','November','December',
   ];
 
   daysInMonth: number[] = [];
@@ -34,6 +28,16 @@ export class CalendarComponent {
 
   ngOnInit(): void {
     this.renderCalendar();
+  }
+
+  constructor(
+    private fb: FormBuilder,
+    public reminderService: ReminderServiceService
+  ) {
+    this.reminderForm = this.fb.group({
+      description: [''],
+      date: [''],
+    });
   }
 
   renderCalendar(): void {
@@ -70,5 +74,61 @@ export class CalendarComponent {
 
     this.currentMonthName = this.months[this.currMonth];
     this.currentDate.nativeElement.innerText = `${this.currentMonthName} ${this.currYear}`;
+  }
+
+  openReminderForm(date: Date) {
+    const existingReminder = this.reminderService.getReminderByDate(date);
+    if (existingReminder) {
+      this.isEditingReminder = true;
+      this.reminderForm.setValue({
+        description: existingReminder.description,
+        date: existingReminder.date,
+      });
+    } else {
+      this.isEditingReminder = false;
+      this.reminderForm.reset();
+      this.reminderForm.patchValue({ date });
+    }
+    this.isClicked = true;
+  }
+
+  saveReminder() {
+    const formData = this.reminderForm.value;
+    if (this.isEditingReminder) {
+      const existingReminder = this.reminderService.getReminderByDate(
+        formData.date
+      );
+      if (existingReminder) {
+        this.reminderService.editReminder(
+          existingReminder.id,
+          formData.description
+        );
+      }
+    } else {
+      const newReminder: Reminder = {
+        id: Date.now(),
+        description: formData.description,
+        date: formData.date,
+      };
+      this.reminderService.createReminder(newReminder);
+      console.log('um reminder foi criado com sucesso');
+      console.log(newReminder);
+    }
+    this.isClicked = false;
+  }
+
+  clickedOnDay() {
+    this.isClicked = true;
+  }
+  editReminder(reminder: Reminder) {
+    this.isEditingReminder = true;
+    this.reminderForm.setValue({
+      description: reminder.description,
+      date: reminder.date,
+    });
+    this.isClicked = true;
+  }
+  deleteReminder(reminder: Reminder) {
+    this.reminderService.deleteReminder(reminder.id);
   }
 }
