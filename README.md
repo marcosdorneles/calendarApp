@@ -49,22 +49,22 @@ ng serve
 
 ## Usage
 
-1.Open the calendar application.
-2.Click on a specific date to add a new reminder.
-3.Provide a reminder text (up to 30 characters), select a day and time.
-4.Click "Save" to add the reminder to the calendar.
-5.Reminders will be displayed when clicked on the day it was saved.
-6.To edit or delete a reminder, click on the day that the reminder was created and then click on the trash bin.
-7.To expand the calendar to a different month, navigate to the desired month/year.
+- Open the calendar application.
+- Click on a specific date to add a new reminder.
+- Provide a reminder text (up to 30 characters), select a day and time.
+- Click "Save" to add the reminder to the calendar.
+- Reminders will be displayed when clicked on the day it was saved.
+- To edit or delete a reminder, click on the day that the reminder was created and then click on the trash bin.
+- To expand the calendar to a different month, navigate to the desired month/year.
 
 ## Improvements
 
 Here are some areas where the project could be improved:
 
-1.Implement user authentication to provide individual calendars and data persistence.
-2.Add the ability to set reminders for recurring events (e.g., weekly meetings).
-3.Enhance the user experience by providing drag-and-drop functionality for reminder placement on the calendar.
-4.Improve the UI and styling for a more polished look.
-5.Implement unit and integration testing to ensure the reliability of the application.
+- Better folder organization.
+- Better separation of components and logic.
+- Enhance the user experience by providing visual indicatives on the days that contains reminders.
+- Improve the UI and styling for a more polished look.
+- Implement unit and integration testing to ensure the reliability of the application.
 
 
