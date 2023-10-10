@@ -152,5 +152,26 @@ export class CalendarComponent {
     }
     return [];
   }
+
+  nextMonth(): void {
+    if (this.currMonth === 11) {
+      this.currMonth = 0;
+      this.currYear++;
+    } else {
+      this.currMonth++;
+    }
+    this.renderCalendar();
+  }
+  
+  previousMonth(): void {
+    if (this.currMonth === 0) {
+      this.currMonth = 11;
+      this.currYear--;
+    } else {
+      this.currMonth--;
+    }
+    this.renderCalendar();
+  }
+  
   
 }
