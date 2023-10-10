@@ -22,8 +22,9 @@ export class CalendarComponent {
     'October','November','December',
   ];
 
-  daysInMonth: number[] = [];
+  daysInMonth: Date[] = [];
 
+  selectedDate: Date | null = null;
   currentMonthName: string = '';
 
   ngOnInit(): void {
@@ -61,23 +62,24 @@ export class CalendarComponent {
     this.daysInMonth = [];
 
     for (let i = firstDayOfMonth; i > 0; i--) {
-      this.daysInMonth.push(lastDateOfLastMonth - i + 1);
+      this.daysInMonth.push(new Date(this.currYear, this.currMonth, lastDateOfLastMonth - i + 1));
     }
-
+    
     for (let i = 1; i <= lastDateOfMonth; i++) {
-      this.daysInMonth.push(i);
+      this.daysInMonth.push(new Date(this.currYear, this.currMonth, i));
     }
-
+    
     for (let i = lastDayOfMonth; i < 6; i++) {
-      this.daysInMonth.push(i - lastDayOfMonth + 1);
+      this.daysInMonth.push(new Date(this.currYear, this.currMonth, i - lastDayOfMonth + 1));
     }
+    
 
     this.currentMonthName = this.months[this.currMonth];
     this.currentDate.nativeElement.innerText = `${this.currentMonthName} ${this.currYear}`;
   }
 
-  openReminderForm(date: Date) {
-    const existingReminder = this.reminderService.getReminderByDate(date);
+  openReminderForm() {
+    const existingReminder = this.reminderService.getReminderByDate(this.selectedDate!);
     if (existingReminder) {
       this.isEditingReminder = true;
       this.reminderForm.setValue({
@@ -87,10 +89,11 @@ export class CalendarComponent {
     } else {
       this.isEditingReminder = false;
       this.reminderForm.reset();
-      this.reminderForm.patchValue({ date });
+      this.reminderForm.patchValue({ date: this.selectedDate });
     }
     this.isClicked = true;
   }
+  
 
   saveReminder() {
     const formData = this.reminderForm.value;
@@ -117,18 +120,33 @@ export class CalendarComponent {
     this.isClicked = false;
   }
 
-  clickedOnDay() {
+  clickedOnDay(number: Date) {
+    this.selectedDate = number;
     this.isClicked = true;
   }
-  editReminder(reminder: Reminder) {
+  
+  editReminder(reminder: Reminder, date: Date) {
     this.isEditingReminder = true;
     this.reminderForm.setValue({
       description: reminder.description,
-      date: reminder.date,
+      date: date,
     });
     this.isClicked = true;
   }
+  
   deleteReminder(reminder: Reminder) {
     this.reminderService.deleteReminder(reminder.id);
   }
+  calculateDate(day: number): Date {
+    return new Date(this.currYear, this.currMonth, day);
+  }
+  filteredReminders(): Reminder[] {
+    if (this.selectedDate) {
+      return this.reminderService.getReminders().filter((reminder) =>
+        reminder.date.toDateString() === this.selectedDate!.toDateString()
+      );
+    }
+    return [];
+  }
+  
 }

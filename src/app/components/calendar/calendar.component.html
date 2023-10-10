@@ -19,10 +19,14 @@
         <li>Sat</li>
       </ul>
       <ul class="days">
-        <li (click)="clickedOnDay()" *ngFor="let day of daysInMonth">
-          {{ day }}
+        <li (click)="clickedOnDay(day)" *ngFor="let day of daysInMonth">
+          {{ day.getDate() }}
         </li>
       </ul>
+      
+      
+      
+      
     </div>
   </div>
 
@@ -59,17 +63,13 @@
     </div>
     <div class="reminders">
       <h2>Reminders of the day</h2>
-      <ul>
-        <li *ngFor="let reminder of reminderService.getReminders()">
-          {{ reminder.description }}
-          <button class="btn btn-primary" (click)="editReminder(reminder)">
-            Edit
-          </button>
-          <button class="btn btn-danger" (click)="deleteReminder(reminder)">
-            Delete
-          </button>
+      <ul class="days">
+        <li (click)="clickedOnDay(day)" *ngFor="let day of daysInMonth">
+          {{ day.getDate() }}
         </li>
       </ul>
+      
     </div>
+    
   </div>
 </div>
