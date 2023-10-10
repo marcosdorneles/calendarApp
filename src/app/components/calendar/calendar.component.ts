@@ -114,15 +114,19 @@ export class CalendarComponent {
         date: formData.date,
       };
       this.reminderService.createReminder(newReminder);
-      console.log('um reminder foi criado com sucesso');
-      console.log(newReminder);
+      console.log(`Um novo reminder foi criado com sucesso! ${newReminder}`);
+
     }
     this.isClicked = false;
   }
 
   clickedOnDay(number: Date) {
-    this.selectedDate = number;
-    this.isClicked = true;
+    this.selectedDate = number
+    this.reminderForm.setValue({
+      description:"",
+      date: number
+    })
+    this.isClicked = true
   }
   
   editReminder(reminder: Reminder, date: Date) {
