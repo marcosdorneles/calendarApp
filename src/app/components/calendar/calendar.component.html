@@ -66,9 +66,14 @@
       <ul>
         <li *ngFor="let reminder of filteredReminders()">
           {{ reminder.description }}
-
-          <button class="btn btn-primary" (click)="editReminder(reminder, selectedDate!)">Edit</button>
-          <button class="btn btn-danger" (click)="deleteReminder(reminder)">Delete</button>
+          <div class="btn-wrapper">
+            <button  class="reminder-btn" (click)="editReminder(reminder, selectedDate!)">
+              <img src="assets/edit.svg" alt="">
+            </button>
+            <button class="reminder-btn" (click)="deleteReminder(reminder)">
+              <img src="assets/delete.svg" alt="">
+            </button>
+          </div>
         </li>
 
       </ul>

@@ -203,3 +203,21 @@ header .current-date {
 .popup .card-footer button:hover {
   background-color: #3f8eb0;
 }
+
+
+.reminder-btn {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 5px; /* Ajuste a margem superior conforme necessário */
+  background: none;
+  border: none;
+}
+
+.reminder-btn img {
+  margin-right: 5px;
+}
+
+.btn-wrapper{
+  display: flex;
+}
