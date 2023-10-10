@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Reminder } from 'src/app/interfaces/reminder';
 import { ReminderServiceService } from 'src/app/services/reminder.service';
 
@@ -32,6 +33,7 @@ export class CalendarComponent {
   }
 
   constructor(
+    private snackBar: MatSnackBar,
     private fb: FormBuilder,
     public reminderService: ReminderServiceService
   ) {
@@ -114,7 +116,7 @@ export class CalendarComponent {
         date: formData.date,
       };
       this.reminderService.createReminder(newReminder);
-      console.log(`Um novo reminder foi criado com sucesso! ${newReminder}`);
+      let snackBar = this.snackBar.open('Reminder created!', 'Undo')
 
     }
     this.isClicked = false;
@@ -136,10 +138,13 @@ export class CalendarComponent {
       date: date,
     });
     this.isClicked = true;
+    let snackBar = this.snackBar.open('Reminder created!', 'Undo')
+
   }
   
   deleteReminder(reminder: Reminder) {
     this.reminderService.deleteReminder(reminder.id);
+    let snackBarRef = this.snackBar.open('Reminder deleted', 'Undo')
   }
   calculateDate(day: number): Date {
     return new Date(this.currYear, this.currMonth, day);
